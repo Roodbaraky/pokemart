@@ -2,9 +2,11 @@ import Image from "next/image";
 import React from "react";
 
 export interface Item {
-  title: string;
-  src: string;
+  name: string;
   altText: string;
+  sprites:{default:string}
+  cost:string
+  
 }
 export default async function Showcase() {
     const randomId =200- Math.round(Math.random()*100)

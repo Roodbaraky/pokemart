@@ -1,6 +1,7 @@
 
 import React from "react";
 import ItemCard from "./ItemCard";
+import { Item } from "./Showcase";
 //https://pokeapi.co/api/v2/item/
 
 export default async function ItemsContainer() {
@@ -8,19 +9,26 @@ export default async function ItemsContainer() {
   const preList = await response.json()
   const itemsList = preList.results
   const shuffledItems = itemsList.sort(() => 0.5 - Math.random());
-  const items = shuffledItems.slice(0, 3).map((item)=>item.name);
-  console.log(items);
+  const items = shuffledItems.slice(0, 68).map((item)=>item.name);
   const fetchedItems = await Promise.all(
-    items.map( (item) =>  fetch(`https://pokeapi.co/api/v2/item/${item}`))
+    items.map( (item: Item) =>  fetch(`https://pokeapi.co/api/v2/item/${item}`))
   );
-  console.log(fetchedItems)
+  
   const convertedItems = await Promise.all(
     fetchedItems.map(async (item) => await (await item.json()))
   );
-console.log(convertedItems)
+  const coffeeItem:Item = {
+    name: "coffee",
+    altText: "a refreshing, AFFORDABLE cup of coffee",
+    sprites: {
+      default: "/assets/nobgcoffee.png"
+    },
+    cost: "£4"
+  }
+
   return (
-    <section className="flex flex-wrap content-center my-3">
-     { convertedItems.map((item)=> <ItemCard key={item.name} item={item}/> )}
+    <section className="flex flex-wrap content-evenly my-3 mx-auto self-center justify-center w-full">
+     { [coffeeItem,...convertedItems].map((item)=> <ItemCard key={item.name} item={item}/> )}
     </section>
   );
 }

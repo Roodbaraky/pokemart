@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const dummyItem: Item = {
-  title: "Pikachu",
+  name: "Pikachu",
   src: "/assets/image.png",
   altText: "Pikachu",
 };
