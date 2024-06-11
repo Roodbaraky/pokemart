@@ -4,15 +4,13 @@ import React from "react";
 export interface Item {
   name: string;
   altText: string;
-  sprites:{default:string}
-  cost:string
-  
+  sprites: { default: string };
+  cost: string;
 }
 export default async function Showcase() {
-    const randomId =200- Math.round(Math.random()*100)
-    console.log(randomId)
+  const randomId = 200 - Math.round(Math.random() * 100);
   const response = await fetch(`https://pokeapi.co/api/v2/item/${randomId}`);
-  const item = await response.json()
+  const item = await response.json();
 
   return (
     <article className="bg-slate-300 p-10 rounded-xl">
@@ -25,7 +23,7 @@ export default async function Showcase() {
         className="p-4 rounded-full"
       />
       <h2 className="text-center text-2xl">{item.name.toUpperCase()}</h2>
-      <p className="text-center">{`£${item.cost||10}`}</p>
+      <p className="text-center">{`£${item.cost || 10}`}</p>
     </article>
   );
 }

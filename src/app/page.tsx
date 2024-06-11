@@ -5,8 +5,11 @@ import Link from "next/link";
 
 const dummyItem: Item = {
   name: "Pikachu",
-  src: "/assets/image.png",
   altText: "Pikachu",
+  sprites: {
+    default: "/assets/image.png",
+  },
+  cost: "",
 };
 export default function Home() {
   return (
@@ -19,7 +22,7 @@ export default function Home() {
         className="w-full"
       />
       <section id="featured-item" className="flex flex-col">
-        <Showcase item={dummyItem} />
+        <Showcase/>
         <Link href={"/pokemart"} className="flex flex-col">
           <Button className="flex  self-center text-xl my-4 scale-125">
             Go to the store!
