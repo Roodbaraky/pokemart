@@ -1,9 +1,11 @@
 import React from "react";
 import ItemCard from "./ItemCard";
 import { Item } from "./Showcase";
+import { BasketWrapper } from "@/context/context";
+import Basket from "./Basket";
 //https://pokeapi.co/api/v2/item/
 
-export default async function ItemsContainer() {
+export default async function ItemsContainer(this: any) {
   const response = await fetch("https://pokeapi.co/api/v2/item/?limit=200");
   const preList = await response.json();
   const itemsList = preList.results;
@@ -16,11 +18,12 @@ export default async function ItemsContainer() {
   );
 
   const convertedItems = await Promise.all(
-    fetchedItems.map(async (item) => await await item.json())
+    fetchedItems.map(async (item) => await item.json())
   );
   const coffeeItem: Item = {
     name: "coffee",
     altText: "a refreshing, AFFORDABLE cup of coffee",
+    effect_entries: [{ effect: "a refreshing, AFFORDABLE cup of coffee" }],
     sprites: {
       default: "/assets/nobgcoffee.png",
     },
@@ -28,10 +31,13 @@ export default async function ItemsContainer() {
   };
 
   return (
-    <section className="flex flex-wrap content-evenly my-3 mx-auto self-center justify-center w-full">
-      {[coffeeItem, ...convertedItems].map((item) => (
-        <ItemCard key={item.name} item={item} />
-      ))}
-    </section>
+    <BasketWrapper >
+      <Basket />
+      <section className="flex flex-wrap content-evenly my-3 mx-auto self-center justify-center w-full">
+        {[coffeeItem, ...convertedItems].map((item) => (
+          <ItemCard key={item.name} item={item} />
+        ))}
+      </section>
+    </BasketWrapper>
   );
 }

@@ -6,6 +6,7 @@ export interface Item {
   altText: string;
   sprites: { default: string };
   cost: string;
+  effect_entries: { effect: string }[];
 }
 export default async function Showcase() {
   const randomId = 200 - Math.round(Math.random() * 100);
