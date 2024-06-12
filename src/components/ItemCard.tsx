@@ -17,10 +17,27 @@ export default function ItemCard({ item }: { item: Item }) {
 
   const handleClick = () => {
     console.log("clicking");
-  console.log(item)
-    setBasket([...basket, {...item, key:item.id}])
-    console.log([...basket, item])
+    let itemFound = false;
+
+    for (let i = 0; i < basket.length; i++) {
+      if (basket[i].id === item.id) {
+        const tempBasket = [
+          ...basket.slice(0, i),
+          { ...item, qty: basket[i].qty + 1 },
+          ...basket.slice(i + 1),
+        ];
+
+        setBasket(tempBasket);
+        itemFound = true;
+        break;
+      }
+    }
+
+    if (!itemFound) {
+      setBasket([...basket, { ...item, key: item.id, qty: 1 }]);
+    }
   };
+
   return (
     <article
       className={`bg-slate-300 p-8 rounded-xl m-2 self-center min-w-56 ${extra}  `}
@@ -31,7 +48,7 @@ export default function ItemCard({ item }: { item: Item }) {
         src={item.sprites.default || ""}
         width={500}
         height={500}
-        alt={item.altText||item.effect_entries[0].effect}
+        alt={item.altText || item.effect_entries[0].effect}
         className="p-4 rounded-xl size-40"
       />
       <h2 className="text-center text-2xl">{item.cost || 100000}</h2>

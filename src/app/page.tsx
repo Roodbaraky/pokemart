@@ -1,16 +1,9 @@
-import Showcase, { Item } from "@/components/Showcase";
+import Showcase from "@/components/Showcase";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-const dummyItem: Item = {
-  name: "Pikachu",
-  altText: "Pikachu",
-  sprites: {
-    default: "/assets/image.png",
-  },
-  cost: "",
-};
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center  p-4 mt-16 bg-slate-50 w-full">
