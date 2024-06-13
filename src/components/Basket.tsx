@@ -4,6 +4,7 @@ import { ShoppingBasket } from "lucide-react";
 import { useContext, useState } from "react";
 import ItemTile, { BasketItem } from "./ItemTile";
 import { Button } from "./ui/button";
+import { basketTotaller } from "@/utils/utils";
 export default function Basket() {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket } = useContext(BasketContext);
@@ -27,14 +28,14 @@ export default function Basket() {
         ))}
         <div className="flex flex-col sticky bottom-0 bg-slate-600 rounded-xl w-full px-2 pb-2 text-white italic">
           Subtotal:
-         <div className="flex">
-         ₽
-            {basket.reduce(
-              (acc, curr) =>
-                acc + (!curr.name.includes("coffee") ? Number(curr.cost) * curr.qty : 0),
-              0
-            )}
-         </div>
+          <div className="flex justify-between">
+            ₽
+            {basketTotaller(basket, 'poke')}
+            <div>
+              £
+              {basketTotaller(basket, 'gbp')}
+            </div>
+          </div>
           <Button>Checkout</Button>
         </div>
       </section>

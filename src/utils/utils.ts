@@ -1,4 +1,5 @@
 import { BasketItem } from "@/components/ItemTile";
+import exp from "constants";
 
 export const basketItemQTYChanger = (basket: BasketItem[], setBasket, item, num: number) => {
     let itemFound = false;
@@ -46,5 +47,28 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket, item, num:
                 effect_entries: [{ effect: item.effect_entries[0].effect }],
             },
         ]);
+    }
+}
+
+export const basketTotaller = (basket: BasketItem[], currency) => {
+    if (currency === 'gbp') {
+       return basket.reduce(
+            (acc, curr) =>
+                acc +
+                (curr.name.includes("coffee")
+                    ? Number(curr.cost) * curr.qty
+                    : 0),
+            0
+        )
+    }
+    if (currency === 'poke') {
+        return basket.reduce(
+            (acc, curr) =>
+                acc +
+                (!curr.name.includes("coffee")
+                    ? Number(curr.cost) * curr.qty
+                    : 0),
+            0
+        )
     }
 }
