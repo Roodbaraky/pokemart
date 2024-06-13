@@ -21,6 +21,7 @@ export default async function ItemsContainer(this: any) {
     fetchedItems.map(async (item) => await item.json())
   );
   const coffeeItem: Item = {
+    id:8008135,
     name: "coffee",
     altText: "a refreshing, AFFORDABLE cup of coffee",
     effect_entries: [{ effect: "a refreshing, AFFORDABLE cup of coffee" }],

@@ -1,15 +1,15 @@
 import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
 
 import Image from "next/image";
+import { Item } from "./ItemCard";
 
-export interface BasketItem {
-  name: string;
-  cost: string;
-  effect_entries: { 0: { effect: string } };
-  id: string;
+export interface BasketItem extends Item {
+  qty: number;
+  key: string;
+  
 }
 export default function ItemTile({ item }: { item: BasketItem }) {
-  const description = item.effect_entries[0].effect;
+  const description = item.effect_entries?.[0]?.effect || "";
   return (
     <article className="w-full p-2">
       <p className="font-semibold">{item.name.toUpperCase()}</p>

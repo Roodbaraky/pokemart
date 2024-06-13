@@ -1,11 +1,26 @@
 "use client";
 import React, { useContext } from "react";
-import { Item } from "./Showcase";
 import Image from "next/image";
 import { BasketContext } from "../context/context";
+import { BasketItem } from "./ItemTile";
+
+export interface Item {
+  id: string;
+  name: string;
+  sprites: {
+    default: string;
+  };
+  altText?: string;
+  effect_entries: { effect: string }[];
+  cost: string;
+}
 
 export default function ItemCard({ item }: { item: Item }) {
-  const { basket, setBasket } = useContext(BasketContext);
+  const { basket, setBasket } = useContext(BasketContext) as unknown as {
+    basket: BasketItem[];
+    setBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
+  };
+
   const capitalisedName =
     item.name === "coffee"
       ? "Buy me a coffee"
@@ -21,9 +36,14 @@ export default function ItemCard({ item }: { item: Item }) {
 
     for (let i = 0; i < basket.length; i++) {
       if (basket[i].id === item.id) {
-        const tempBasket = [
+        const tempBasket: BasketItem[] = [
           ...basket.slice(0, i),
-          { ...item, qty: basket[i].qty + 1 },
+          {
+            ...item,
+            qty: basket[i].qty + 1,
+            key: item.id,
+            effect_entries: [{ effect: item.effect_entries[0].effect }],
+          },
           ...basket.slice(i + 1),
         ];
 
@@ -34,13 +54,21 @@ export default function ItemCard({ item }: { item: Item }) {
     }
 
     if (!itemFound) {
-      setBasket([...basket, { ...item, key: item.id, qty: 1 }]);
+      setBasket([
+        ...basket,
+        {
+          ...item,
+          key: item.id,
+          qty: 1,
+          effect_entries: [{ effect: item.effect_entries[0].effect }],
+        },
+      ]);
     }
   };
 
   return (
     <article
-      className={`bg-slate-300 p-8 rounded-xl m-2 self-center min-w-56 ${extra}  `}
+      className={`bg-slate-300 p-8 rounded-xl m-2 self-center min-w-56 ${extra}`}
       onClick={handleClick}
     >
       <h2 className="text-center text-xl">{capitalisedName}</h2>
