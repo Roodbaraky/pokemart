@@ -13,13 +13,13 @@ export default function Basket() {
   };
 
   return (
-    <section className="top-18 fixed right-20 custom-right" >
+    <section className="top-18 fixed right-5 custom-right" >
       <Button onClick={handleBasketClick}>
         {basket.reduce((acc, curr) => acc + curr.qty, 0)} <ShoppingBasket />
       </Button>
       <section
         id="basket-container"
-        className={`transition-all delay-200 ease-in-out fixed top-36 right-20 custom-right p-2 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll ${
+        className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll ${
           isBasketOpen ? "visible" : "hidden"
         }`}
       >
