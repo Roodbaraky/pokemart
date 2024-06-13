@@ -1,9 +1,9 @@
 "use client";
-import React, { useContext } from "react";
+import { basketItemQTYChanger } from "@/utils/utils";
 import Image from "next/image";
+import React, { useContext } from "react";
 import { BasketContext } from "../context/context";
 import { BasketItem } from "./ItemTile";
-import { basketItemQTYChanger } from "@/utils/utils";
 
 export interface Item {
   id: string;

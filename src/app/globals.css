@@ -78,3 +78,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (min-width: 1200px) {
+  .custom-right {
+    right: calc((100vw - 1200px) / 2 + 20px);
+  }
+}
