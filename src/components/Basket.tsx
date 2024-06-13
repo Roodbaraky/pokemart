@@ -5,6 +5,7 @@ import { ShoppingBasket } from "lucide-react";
 import { useContext, useState } from "react";
 import ItemTile, { BasketItem } from "./ItemTile";
 import { Button } from "./ui/button";
+import CheckoutButton from "./CheckoutButton";
 export default function Basket() {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket } = useContext(BasketContext);
@@ -40,7 +41,7 @@ export default function Basket() {
             ₽{basketTotaller(basket, "poke")}
             <div>£{basketTotaller(basket, "gbp")}</div>
           </div>
-          <Button>Checkout</Button>
+          <CheckoutButton/>
         </div>
       </section>)}
     </section>

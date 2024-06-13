@@ -11,7 +11,7 @@ export default async function ItemsContainer(this: any) {
   const itemsList = preList.results;
   const shuffledItems = itemsList.sort(() => 0.5 - Math.random());
   const items = shuffledItems
-    .slice(0, 68)
+    .slice(0, 67)
     .map((item: { name: string }) => item.name);
   const fetchedItems = await Promise.all(
     items.map((item: Item) => fetch(`https://pokeapi.co/api/v2/item/${item}`))
