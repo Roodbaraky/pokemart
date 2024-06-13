@@ -1,6 +1,6 @@
 "use client";
 import { BasketContext } from "@/context/context";
-import { basketTotaller } from "@/utils/utils";
+import { basketCounter, basketTotaller } from "@/utils/utils";
 import { ShoppingBasket } from "lucide-react";
 import { useContext, useState } from "react";
 import ItemTile, { BasketItem } from "./ItemTile";
@@ -11,13 +11,21 @@ export default function Basket() {
   const handleBasketClick = () => {
     setIsBasketOpen(!isBasketOpen);
   };
+  const basketCount = basketCounter(basket)
 
   return (
     <section className="top-18 fixed right-5 custom-right" >
       <Button onClick={handleBasketClick}>
-        {basket.reduce((acc, curr) => acc + curr.qty, 0)} <ShoppingBasket />
+        {basketCount} <ShoppingBasket />
       </Button>
-      <section
+      {basketCount===0
+      ?(<section
+      id="basket-empty-msg"
+      className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll ${
+        isBasketOpen ? "visible" : "hidden"
+      }`}
+    >no items!</section>  )    
+      :(<section
         id="basket-container"
         className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll ${
           isBasketOpen ? "visible" : "hidden"
@@ -34,7 +42,7 @@ export default function Basket() {
           </div>
           <Button>Checkout</Button>
         </div>
-      </section>
+      </section>)}
     </section>
   );
 }

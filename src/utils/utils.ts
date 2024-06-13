@@ -1,7 +1,7 @@
 import { BasketItem } from "@/components/ItemTile";
-import exp from "constants";
+import { Dispatch } from "react";
 
-export const basketItemQTYChanger = (basket: BasketItem[], setBasket, item, num: number) => {
+export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<BasketItem[]>, item:BasketItem, num: number) => {
     let itemFound = false;
     if (num === 0 || (num === -1 && item.qty === 1)) {
         for (let i = 0; i < basket.length; i++) {
@@ -49,8 +49,10 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket, item, num:
         ]);
     }
 }
-
-export const basketTotaller = (basket: BasketItem[], currency) => {
+export const basketCounter = (basket:BasketItem[])=>{
+   return basket.reduce((acc, curr) => acc + curr.qty, 0)   
+}
+export const basketTotaller = (basket: BasketItem[], currency:string) => {
     if (currency === 'gbp') {
        return basket.reduce(
             (acc, curr) =>
