@@ -1,7 +1,7 @@
 "use client";
 import { BasketContext } from "@/context/context";
 import { ShoppingBasket } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ItemTile, { BasketItem } from "./ItemTile";
 import { Button } from "./ui/button";
 export default function Basket() {
@@ -14,7 +14,7 @@ export default function Basket() {
   return (
     <section className="fixed top-18 right-6">
       <Button onClick={handleBasketClick}>
-        <ShoppingBasket />
+        {basket.reduce((acc, curr)=>acc+curr.qty,0)} <ShoppingBasket />
       </Button>
       <section
         id="basket-container"
@@ -25,6 +25,9 @@ export default function Basket() {
         {basket?.map((item: BasketItem) => (
           <ItemTile key={item.id} item={item} />
         ))}
+        <div>
+        <Button>Checkout</Button>
+        </div>
       </section>
     </section>
   );
