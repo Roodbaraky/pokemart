@@ -14,7 +14,7 @@ export default function Basket() {
   return (
     <section className="fixed top-18 right-6">
       <Button onClick={handleBasketClick}>
-        {basket.reduce((acc, curr)=>acc+curr.qty,0)} <ShoppingBasket />
+        {basket.reduce((acc, curr) => acc + curr.qty, 0)} <ShoppingBasket />
       </Button>
       <section
         id="basket-container"
@@ -25,8 +25,17 @@ export default function Basket() {
         {basket?.map((item: BasketItem) => (
           <ItemTile key={item.id} item={item} />
         ))}
-        <div>
-        <Button>Checkout</Button>
+        <div className="flex flex-col sticky bottom-0 bg-slate-600 rounded-xl w-full px-2 pb-2 text-white italic">
+          Subtotal:
+         <div className="flex">
+         ₽
+            {basket.reduce(
+              (acc, curr) =>
+                acc + (curr.cost[0] !== "£" ? Number(curr.cost) * curr.qty : 0),
+              0
+            )}
+         </div>
+          <Button>Checkout</Button>
         </div>
       </section>
     </section>

@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import Image from "next/image";
 import { BasketContext } from "../context/context";
 import { BasketItem } from "./ItemTile";
+import { basketItemQTYChanger } from "@/utils/utils";
 
 export interface Item {
   id: string;
@@ -21,6 +22,7 @@ export default function ItemCard({ item }: { item: Item }) {
     setBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
   };
 
+
   const capitalisedName =
     item.name === "coffee"
       ? "Buy me a coffee"
@@ -31,39 +33,7 @@ export default function ItemCard({ item }: { item: Item }) {
       : "";
 
   const handleClick = () => {
-    console.log("clicking");
-    let itemFound = false;
-
-    for (let i = 0; i < basket.length; i++) {
-      if (basket[i].id === item.id) {
-        const tempBasket: BasketItem[] = [
-          ...basket.slice(0, i),
-          {
-            ...item,
-            qty: basket[i].qty + 1,
-            key: item.id,
-            effect_entries: [{ effect: item.effect_entries[0].effect }],
-          },
-          ...basket.slice(i + 1),
-        ];
-
-        setBasket(tempBasket);
-        itemFound = true;
-        break;
-      }
-    }
-
-    if (!itemFound) {
-      setBasket([
-        ...basket,
-        {
-          ...item,
-          key: item.id,
-          qty: 1,
-          effect_entries: [{ effect: item.effect_entries[0].effect }],
-        },
-      ]);
-    }
+    basketItemQTYChanger(basket, setBasket, item, 1)
   };
 
   return (
@@ -79,7 +49,7 @@ export default function ItemCard({ item }: { item: Item }) {
         alt={item.altText || item.effect_entries[0].effect}
         className="p-4 rounded-xl size-40"
       />
-      <h2 className="text-center text-2xl">{item.cost || 100000}</h2>
+      <h2 className="text-center text-2xl">{Number(item.cost)===0?10000:item.cost}</h2>
     </article>
   );
 }
