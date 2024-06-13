@@ -28,14 +28,24 @@ export default async function ItemsContainer(this: any) {
     sprites: {
       default: "/assets/nobgcoffee.png",
     },
-    cost: "£4",
+    cost: "4",
+  };
+  const smallCoffeeItem: Item = {
+    id:800813,
+    name: "small coffee",
+    altText: "a refreshing, AFFORDABLE cup of coffee",
+    effect_entries: [{ effect: "a refreshing, AFFORDABLE cup of coffee" }],
+    sprites: {
+      default: "/assets/nobgcoffee.png",
+    },
+    cost: "2.50",
   };
 
   return (
     <BasketWrapper >
       <Basket />
       <section className="flex flex-wrap content-evenly my-3 mx-auto self-center justify-center w-full">
-        {[coffeeItem, ...convertedItems].map((item) => (
+        {[coffeeItem, smallCoffeeItem, ...convertedItems].map((item) => (
           <ItemCard key={item.name} item={item} />
         ))}
       </section>

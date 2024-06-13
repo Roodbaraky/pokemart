@@ -35,7 +35,7 @@ export default function ItemTile({ item }: { item: BasketItem }) {
       <p className="line-clamp-2 text-ellipsis italic">{description}</p>
       <div className="flex flex-row gap-2">
         <p className="">
-          {item.cost[0] !== "£" ? "₽" : <></>}
+          {item.name.includes('coffee')? "£" : "₽" }
           {item.cost}
         </p>
         <p className="">QTY: {item.qty || 1} </p>

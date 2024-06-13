@@ -31,7 +31,7 @@ export default function Basket() {
          ₽
             {basket.reduce(
               (acc, curr) =>
-                acc + (curr.cost[0] !== "£" ? Number(curr.cost) * curr.qty : 0),
+                acc + (!curr.name.includes("coffee") ? Number(curr.cost) * curr.qty : 0),
               0
             )}
          </div>
