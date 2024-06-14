@@ -9,6 +9,7 @@ import ItemTile, { BasketItem } from "./ItemTile";
 import { Button } from "./ui/button";
 
 export default function Basket() {
+  //useSession, signIn, signOut
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket, setBasket } = useContext(BasketContext);
   const pathname = usePathname();
