@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import UserMenu from "./UserMenu";
 
 const navLinks = [
   {
@@ -100,7 +101,7 @@ const navLinks = [
 
               Log in
             </LoginLink>)
-            :(<LogoutLink>{`Hi, ${user.given_name}`}</LogoutLink>)}
+            :(<UserMenu username={user.given_name}/>)}
             {/* !loggedIn?LoginLink : LogoutLink */}
             
           </li>
