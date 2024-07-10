@@ -51,8 +51,8 @@ const navLinks = [
     //   console.log(getFlag("eat:chips", false, "b"));
     //   console.log("accessToken", accessToken);
     //   console.log(getClaim("aud"));
-      if (isLoading) return <div>Loading...</div>;
-      console.log(user)
+      // if (isLoading) return <div>Loading...</div>;
+      // console.log(user)
 
   return (
     <header className="flex  items-center justify-between p-2 px-4 fixed w-full max-w-[1200px] border-b bg-slate-50">
@@ -86,7 +86,7 @@ const navLinks = [
           <li>
             
            
-           {!user
+           {!isLoading?!user
            ? (<LoginLink id="login-nav"
             className="text-zinc-500"
             onClick={(e) => {
@@ -101,7 +101,8 @@ const navLinks = [
 
               Log in
             </LoginLink>)
-            :(<UserMenu username={user.given_name}/>)}
+            :(<UserMenu username={user.given_name}/>)
+          :<div className="text-zinc-500">Loading...</div>}
             {/* !loggedIn?LoginLink : LogoutLink */}
             
           </li>
