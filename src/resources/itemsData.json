@@ -1,0 +1,7 @@
+{
+    "3000": {"specialPrice": { "quantity": 3, "price": 8000 }, "tag":"Buy 3 get 1000 off" },
+    "1000": { "specialPrice": { "quantity": 2, "price": 1500 }, "tag":"Buy two get one half-price" },
+    "100": { "specialPrice": { "quantity": 2, "price": 180 } , "tag":"Buy two get 20 off"},
+    "80": { "specialPrice": { "quantity": 5, "price": 320 }, "tag":"Buy 5, get one free" }
+  }
+  

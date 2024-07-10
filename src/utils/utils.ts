@@ -1,5 +1,6 @@
 import { BasketItem } from "@/components/ItemTile";
 import { Dispatch } from "react";
+import itemsData from '../resources/itemsData.json'
 
 export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<BasketItem[]>, item:BasketItem, num: number) => {
     let itemFound = false;
@@ -52,6 +53,20 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
 export const basketCounter = (basket:BasketItem[])=>{
    return basket.reduce((acc, curr) => acc + curr.qty, 0)   
 }
+export const priceCalculator = (item:BasketItem)=>{
+const specialPrice =  itemsData[item.cost as keyof typeof itemsData]?.specialPrice
+let subtotal = 0
+if (specialPrice && item.qty / specialPrice.quantity >= 1){
+    const multiple = Math.floor(item.qty / specialPrice.quantity);
+    const remainder = item.qty % specialPrice.quantity;
+    subtotal += specialPrice.price * multiple;
+    subtotal += +item.cost * remainder;
+}else{
+    subtotal += +item.cost * item.qty
+}
+return subtotal
+}
+
 export const basketTotaller = (basket: BasketItem[], currency:string) => {
     if (currency === 'gbp') {
        return basket.reduce(
@@ -68,7 +83,7 @@ export const basketTotaller = (basket: BasketItem[], currency:string) => {
             (acc, curr) =>
                 acc +
                 (!curr.name.includes("coffee")
-                    ? Number(curr.cost) * curr.qty
+                    ? priceCalculator(curr)
                     : 0),
             0
         )

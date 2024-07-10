@@ -9,7 +9,9 @@ import { basketItemQTYChanger } from "@/utils/utils";
 export interface BasketItem extends Item {
   qty: number;
   key: string;
+  tag?: string;
 }
+
 export default function ItemTile({ item }: { item: BasketItem }) {
   const description = item.effect_entries?.[0]?.effect || "";
   const { basket, setBasket } = useContext(BasketContext);
