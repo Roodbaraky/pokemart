@@ -1,16 +1,16 @@
 "use client";
 import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
 
-import { Item } from "./ItemCard";
-import { useContext } from "react";
+
+import { MouseEvent, useContext } from "react";
 import {  BasketContext } from "@/context/context";
 import { basketItemQTYChanger } from "@/utils/utils";
-import { NewItem } from "./Showcase";
+import { Item } from "./ItemCard";
 
 export interface BasketItem extends Item {
   [x: string]: any;
   qty: number;
-  key: string;
+  key: number;
   tag?: string;
 }
 
@@ -19,8 +19,8 @@ export interface BasketItem extends Item {
 export default function ItemTile({ item }: { item: BasketItem }) {
   const description = item.effect || "";
   const { basket, setBasket } = useContext(BasketContext);
-  const handleClick = (e) => {
-    const targetBtn = e.target.id;
+  const handleClick = (e:MouseEvent) => {
+    const targetBtn = (e.target as HTMLButtonElement).id;
     if (targetBtn === "plus") {
       basketItemQTYChanger(basket, setBasket, item, 1);
     }

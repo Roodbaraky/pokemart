@@ -9,7 +9,7 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs'
   
-export default function UserMenu({username}):ReactNode{
+export default function UserMenu({username}:{username:string|null}):ReactNode{
   return (
     <DropdownMenu modal={false}>
     <DropdownMenuTrigger>{`Hi, ${username}`}</DropdownMenuTrigger>

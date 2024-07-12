@@ -13,8 +13,12 @@ export interface Item {
   cost: number;
 }
 
-export default function ItemCard({ item }: { item: Item }) {
-  const { basket, setBasket } = useContext(BasketContext) as unknown as {
+interface ItemCardProps {
+  item: Item;
+}
+
+export default function ItemCard({ item }: ItemCardProps) {
+  const { basket, setBasket } = useContext(BasketContext) as {
     basket: BasketItem[];
     setBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
   };
@@ -28,7 +32,16 @@ export default function ItemCard({ item }: { item: Item }) {
       : "";
 
   const handleClick = () => {
-    basketItemQTYChanger(basket, setBasket, item, 1);
+    basketItemQTYChanger(
+      basket,
+      setBasket,
+      {
+        ...item,
+        qty: 0,
+        key: item.id,
+      },
+      1
+    );
   };
 
   return (
@@ -49,12 +62,12 @@ export default function ItemCard({ item }: { item: Item }) {
         src={item.sprite || ""}
         width={500}
         height={500}
-        alt={item.effect}
+        alt={item.name === "small coffee" ? "Small Coffee" : item.effect}
         className="p-4 rounded-xl size-40 object-contain"
       />
       <h2 className="text-center text-2xl">
         {item.name.includes("coffee") ? "£" : "₽"}
-        {Number(item.cost) === 0 ? 10000 : item.cost}
+        {+item.cost === 0 ? 10000 : item.cost}
       </h2>
     </article>
   );

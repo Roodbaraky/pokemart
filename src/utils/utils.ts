@@ -1,6 +1,7 @@
-import { BasketItem, NewBasketItem } from "@/components/ItemTile";
+import { BasketItem } from "@/components/ItemTile";
 import { Dispatch } from "react";
 import offersData from '../resources/offersData.json';
+import { Item } from "@/components/ItemCard";
 
 
 export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<BasketItem[]>, item:BasketItem, num: number) => {
@@ -54,7 +55,8 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
 export const basketCounter = (basket:BasketItem[])=>{
    return basket.reduce((acc, curr) => acc + curr.qty, 0)   
 }
-export const priceCalculator = (item: NewBasketItem) => {
+export const priceCalculator = (item: 
+    BasketItem) => {
  
     const specialPrice = offersData.find((offer) => offer.name === item.name)?.specialPrice
     let subtotal = 0

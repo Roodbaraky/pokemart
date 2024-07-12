@@ -1,20 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
+
 export interface Item {
-  name: string;
-  altText: string;
-  sprites: { default: string };
-  cost: string;
-  effect_entries: { 0: { effect: string } };
-  id: number | string;
-}
-export interface NewItem {
   id: number;
   name: string;
   effect: string;
   sprite: string;
-  cost: string;
+  cost: number;
 }
 
 export default async function Showcase() {
