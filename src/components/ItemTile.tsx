@@ -3,17 +3,21 @@ import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
 
 import { Item } from "./ItemCard";
 import { useContext } from "react";
-import { BasketContext } from "@/context/context";
+import {  BasketContext } from "@/context/context";
 import { basketItemQTYChanger } from "@/utils/utils";
+import { NewItem } from "./Showcase";
 
 export interface BasketItem extends Item {
+  [x: string]: any;
   qty: number;
   key: string;
   tag?: string;
 }
 
+
+
 export default function ItemTile({ item }: { item: BasketItem }) {
-  const description = item.effect_entries?.[0]?.effect || "";
+  const description = item.effect || "";
   const { basket, setBasket } = useContext(BasketContext);
   const handleClick = (e) => {
     const targetBtn = e.target.id;

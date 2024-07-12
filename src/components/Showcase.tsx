@@ -9,6 +9,14 @@ export interface Item {
   effect_entries: { 0: { effect: string } };
   id: number | string;
 }
+export interface NewItem {
+  id: number;
+  name: string;
+  effect: string;
+  sprite: string;
+  cost: string;
+}
+
 export default async function Showcase() {
   const randomId = 200 - Math.round(Math.random() * 100);
   const response = await fetch(`https://pokeapi.co/api/v2/item/${randomId}`);

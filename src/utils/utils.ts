@@ -1,6 +1,7 @@
-import { BasketItem } from "@/components/ItemTile";
+import { BasketItem, NewBasketItem } from "@/components/ItemTile";
 import { Dispatch } from "react";
-import itemsData from '../resources/itemsData.json'
+import offersData from '../resources/offersData.json';
+
 
 export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<BasketItem[]>, item:BasketItem, num: number) => {
     let itemFound = false;
@@ -26,7 +27,7 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
                         ...item,
                         qty: basket[i].qty + num,
                         key: item.id,
-                        effect_entries: [{ effect: item.effect_entries[0].effect }],
+                        effect:item.effect,
                     },
                     ...basket.slice(i + 1),
                 ];
@@ -45,7 +46,7 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
                 ...item,
                 key: item.id,
                 qty: 1,
-                effect_entries: [{ effect: item.effect_entries[0].effect }],
+                effect: item.effect,
             },
         ]);
     }
@@ -53,19 +54,22 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
 export const basketCounter = (basket:BasketItem[])=>{
    return basket.reduce((acc, curr) => acc + curr.qty, 0)   
 }
-export const priceCalculator = (item:BasketItem)=>{
-const specialPrice =  itemsData[item.cost as keyof typeof itemsData]?.specialPrice
-let subtotal = 0
-if (specialPrice && item.qty / specialPrice.quantity >= 1){
-    const multiple = Math.floor(item.qty / specialPrice.quantity);
-    const remainder = item.qty % specialPrice.quantity;
-    subtotal += specialPrice.price * multiple;
-    subtotal += +item.cost * remainder;
-}else{
-    subtotal += +item.cost * item.qty
+export const priceCalculator = (item: NewBasketItem) => {
+ 
+    const specialPrice = offersData.find((offer) => offer.name === item.name)?.specialPrice
+    let subtotal = 0
+    
+    if (specialPrice && item.qty / specialPrice.quantity >= 1) {
+        const multiple = Math.floor(item.qty / specialPrice.quantity);
+        const remainder = item.qty % specialPrice.quantity;
+        subtotal += specialPrice.price * multiple;
+        subtotal += item.cost * remainder;
+    } else {
+        subtotal += item.cost * item.qty
+    }
+    return subtotal
 }
-return subtotal
-}
+
 
 export const basketTotaller = (basket: BasketItem[], currency:string) => {
     if (currency === 'gbp') {

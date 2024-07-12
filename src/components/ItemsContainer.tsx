@@ -1,52 +1,35 @@
-import React from "react";
-import ItemCard from "./ItemCard";
-import { Item } from "./Showcase";
 import { BasketWrapper } from "@/context/context";
 import Basket from "./Basket";
+import NewItemCard, { NewItem } from "./NewItemCard";
 //https://pokeapi.co/api/v2/item/
 
 export default async function ItemsContainer(this: any) {
-  const response = await fetch("https://pokeapi.co/api/v2/item/?limit=200");
-  const preList = await response.json();
-  const itemsList = preList.results;
-  const shuffledItems = itemsList.sort(() => 0.5 - Math.random());
-  const items = shuffledItems
-    .slice(0, 67)
-    .map((item: { name: string }) => item.name);
-  const fetchedItems = await Promise.all(
-    items.map((item: Item) => fetch(`https://pokeapi.co/api/v2/item/${item}`))
-  );
+  const itemsResponse = await fetch("https://pokemart-be.onrender.com/items");
+ 
 
-  const convertedItems = await Promise.all(
-    fetchedItems.map(async (item) => await item.json())
-  );
-  const coffeeItem: Item = {
-    id:8008135,
+  const items = await itemsResponse.json();
+  const coffeeItem: NewItem = {
+    id: 8008135,
     name: "coffee",
-    altText: "a refreshing, AFFORDABLE cup of coffee",
-    effect_entries: [{ effect: "a refreshing, AFFORDABLE cup of coffee" }],
-    sprites: {
-      default: "/assets/nobgcoffee.png",
-    },
-    cost: "4",
+    effect: "a refreshing, AFFORDABLE cup of coffee",
+    sprite: "/assets/nobgcoffee.png",
+    cost: 4,
   };
-  const smallCoffeeItem: Item = {
-    id:800813,
+  const smallCoffeeItem: NewItem = {
+    id: 800813,
     name: "small coffee",
-    altText: "a refreshing, AFFORDABLE cup of coffee",
-    effect_entries: [{ effect: "a refreshing, AFFORDABLE cup of coffee" }],
-    sprites: {
-      default: "/assets/nobgcoffee.png",
-    },
-    cost: "2.50",
+    effect: "a refreshing, AFFORDABLE cup of coffee",
+    sprite: "/assets/nobgcoffee.png",
+    cost: 2.50,
   };
+
 
   return (
-    <BasketWrapper >
+    <BasketWrapper>
       <Basket />
       <section className="flex flex-wrap content-evenly my-3 mx-auto self-center justify-center w-full">
-        {[coffeeItem, smallCoffeeItem, ...convertedItems].map((item) => (
-          <ItemCard key={item.name} item={item} />
+        {[coffeeItem, smallCoffeeItem, ...items].map((item: NewItem) => (
+          <NewItemCard key={item.name} item={item} />
         ))}
       </section>
     </BasketWrapper>
