@@ -12,6 +12,8 @@ export default function Basket() {
   //useSession, signIn, signOut
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket, setBasket } = useContext(BasketContext);
+  const [total, setTotal] = useState({ poke: 0, gbp: 0 });
+  const [basketCount, setBasketCount] = useState(0);
   const pathname = usePathname();
   const handleBasketClick = () => {
     setIsBasketOpen(!isBasketOpen);
@@ -21,14 +23,28 @@ export default function Basket() {
       localStorage.clear();
       localStorage.setItem("basket", JSON.stringify(basket));
     }
-  },[basket]);
-  const basketCount = basketCounter(basket);
+  }, [basket]);
+
+  const recalculateTotals = useCallback(async () => {
+    const newgbp = await basketTotaller(basket, "gbp");
+    const newpoke = await basketTotaller(basket, "poke");
+    const newCount = await basketCounter(basket);
+
+    setTotal({ gbp: newgbp, poke: newpoke });
+    setBasketCount(newCount);
+  }, [basket]);
   if (typeof window !== "undefined") {
     window.addEventListener("beforeunload", saveBasketBeforeExit);
   }
   useEffect(() => {
     saveBasketBeforeExit();
-  }, [pathname, saveBasketBeforeExit]);
+    try {
+      recalculateTotals();
+    } catch (err) {
+      console.error(err);
+    } finally {
+    }
+  }, [basket, pathname, recalculateTotals, saveBasketBeforeExit]);
   return (
     <section className="top-18 fixed right-5 custom-right">
       <Button onClick={handleBasketClick}>
@@ -56,8 +72,8 @@ export default function Basket() {
           <div className="flex flex-col sticky bottom-0 bg-slate-600 rounded-xl w-full px-2 pb-2 text-white italic">
             Subtotal:
             <div className="flex justify-between">
-              ₽{basketTotaller(basket, "poke")}
-              <div>£{basketTotaller(basket, "gbp")}</div>
+              ₽{total.poke}
+              <div>£{total.gbp}</div>
             </div>
             {/* put a ternary here for an alt Checkout if already logged in */}
             <CheckoutButton />

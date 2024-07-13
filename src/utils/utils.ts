@@ -1,7 +1,6 @@
 import { BasketItem } from "@/components/ItemTile";
 import { Dispatch } from "react";
 import offersData from '../resources/offersData.json';
-import { Item } from "@/components/ItemCard";
 
 
 export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<BasketItem[]>, item:BasketItem, num: number) => {
@@ -52,20 +51,33 @@ export const basketItemQTYChanger = (basket: BasketItem[], setBasket:Dispatch<Ba
         ]);
     }
 }
-export const basketCounter = (basket:BasketItem[])=>{
-   return basket.reduce((acc, curr) => acc + curr.qty, 0)   
+export const basketCounter = async (basket:BasketItem[])=>{
+   return basket.reduce(async (acc, curr) => await acc + curr.qty, 0)   
 }
-export const priceCalculator = (item: 
+export const priceCalculator = async (item: 
     BasketItem) => {
  
-    const specialPrice = offersData.find((offer) => offer.name === item.name)?.specialPrice
-    let subtotal = 0
+    // const specialPrice = offersData.find((offer) => offer.name === item.name)?.specialPrice
+    // let subtotal = 0
     
+    // if (specialPrice && item.qty / specialPrice.quantity >= 1) {
+    //     const multiple = Math.floor(item.qty / specialPrice.quantity);
+    //     const remainder = item.qty % specialPrice.quantity;
+    //     subtotal += specialPrice.price * multiple;
+    //     subtotal += item.cost * remainder;
+  
+const response = await fetch(`https://pokemart-be.onrender.com/offers/${item.name}`)
+const offer = await response.json()
+let subtotal=0
+if(offer.length){
+
+    const specialPrice = JSON.parse(offer[0]?.specialprice)
     if (specialPrice && item.qty / specialPrice.quantity >= 1) {
         const multiple = Math.floor(item.qty / specialPrice.quantity);
         const remainder = item.qty % specialPrice.quantity;
         subtotal += specialPrice.price * multiple;
         subtotal += item.cost * remainder;
+    }
     } else {
         subtotal += item.cost * item.qty
     }
@@ -73,10 +85,10 @@ export const priceCalculator = (item:
 }
 
 
-export const basketTotaller = (basket: BasketItem[], currency:string) => {
+export const basketTotaller = async (basket: BasketItem[], currency:string) => {
     if (currency === 'gbp') {
        return basket.reduce(
-            (acc, curr) =>
+             (acc, curr) =>
                 acc +
                 (curr.name.includes("coffee")
                     ? Number(curr.cost) * curr.qty
@@ -86,10 +98,10 @@ export const basketTotaller = (basket: BasketItem[], currency:string) => {
     }
     if (currency === 'poke') {
         return basket.reduce(
-            (acc, curr) =>
-                acc +
+            async (acc, curr) =>
+                await acc +
                 (!curr.name.includes("coffee")
-                    ? priceCalculator(curr)
+                    ? await priceCalculator(curr)
                     : 0),
             0
         )
