@@ -13,7 +13,7 @@ export default function Basket() {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket, setBasket } = useContext(BasketContext);
   const [total, setTotal] = useState({ poke: 0, gbp: 0 });
-  const [basketCount, setBasketCount] = useState(0);
+  const [basketCount, setBasketCount] = useState(basket.length);
   const pathname = usePathname();
   const handleBasketClick = () => {
     setIsBasketOpen(!isBasketOpen);
