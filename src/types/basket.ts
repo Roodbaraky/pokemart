@@ -11,3 +11,8 @@ export interface Basket {
     totalQty: number;
     totalPrice: number;
 }
+
+export interface BasketContainerProps{
+    isBasketOpen:boolean;
+    basket:Basket;
+}

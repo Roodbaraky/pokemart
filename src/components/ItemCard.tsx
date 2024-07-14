@@ -1,16 +1,12 @@
 "use client";
 import { BasketContext } from "@/contexts/basket";
-import { Basket } from "@/types/basket";
-import { ItemCardProps } from "@/types/item";
-import { addItemToBasket } from "@/utils/utils";
+import { BasketItem } from "@/types/basket";
+import { Item, ItemCardProps } from "@/types/item";
 import Image from "next/image";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 export default function ItemCard({ item }: ItemCardProps) {
-  const { basket, setBasket } = useContext(BasketContext) as {
-    basket: Basket;
-    setBasket: React.Dispatch<React.SetStateAction<Basket>>;
-  };
+  const { addItem } = useContext(BasketContext);
 
   const capitalisedName = item.name.includes("coffee")
     ? `Buy me a ${item.name}`
@@ -20,15 +16,16 @@ export default function ItemCard({ item }: ItemCardProps) {
       ? " border border-yellow-300 shadow-xl font-semibold"
       : "";
 
-  const handleClick = () => {
-    const newBasket = addItemToBasket(basket, item);
-    setBasket(newBasket);
+  const handleAddItem = (item: Item) => {
+    addItem({ ...item, qty: 1 });
   };
 
   return (
     <article
       className={`bg-slate-300 p-6 rounded-xl m-2 self-center min-w-56 w-56 h-64 ${extra} justify-between`}
-      onClick={handleClick}
+      onClick={() => {
+        handleAddItem(item);
+      }}
     >
       <h2
         className={

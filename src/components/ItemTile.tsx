@@ -1,34 +1,26 @@
 "use client";
-import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
-import { MouseEvent, useContext } from "react";
 import { BasketContext } from "@/contexts/basket";
-import {
-  decreaseItemQTY,
-  increaseItemQTY,
-  removeItemFromBasket,
-} from "@/utils/utils";
 import { BasketItem } from "@/types/basket";
+import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
+import { useContext } from "react";
 
 export default function ItemTile({ item }: { item: BasketItem }) {
   const description = item.effect || "";
-  const { basket, setBasket } = useContext(BasketContext);
-  const handleClick = (e: MouseEvent) => {
-    const targetBtn = (e.target as HTMLButtonElement).id;
-    if (targetBtn === "plus") {
-      const newBasket = increaseItemQTY(basket, item.name);
-      setBasket(newBasket);
-    }
-    if (targetBtn === "minus") {
-      const newBasket = decreaseItemQTY(basket, item.name);
-      setBasket(newBasket);
-    }
-    if (targetBtn === "delete") {
-      const newBasket = removeItemFromBasket(basket, item.name);
-      setBasket(newBasket);
-    } else {
-      return;
-    }
+  const { removeItem, increaseItemQty, decreaseItemQty } =
+    useContext(BasketContext);
+
+  const handleRemoveItem = (itemName: string) => {
+    removeItem(itemName);
   };
+
+  const handleIncreaseItemQty = (itemName: string) => {
+    increaseItemQty(itemName);
+  };
+
+  const handleDecreaseItemQty = (itemName: string) => {
+    decreaseItemQty(itemName);
+  };
+
   return (
     <article className="w-full p-2">
       <p className="font-semibold">{item.name.toUpperCase()}</p>
@@ -41,13 +33,28 @@ export default function ItemTile({ item }: { item: BasketItem }) {
         <p className="">QTY: {item.qty || 1} </p>
       </div>
       <div className="flex self-end justify-end">
-        <a onClick={handleClick} id="plus">
+        <a
+          onClick={() => {
+            handleIncreaseItemQty(item.name);
+          }}
+          id="plus"
+        >
           <PlusSquareIcon className="pointer-events-none" />
         </a>
-        <a onClick={handleClick} id="minus">
+        <a
+          onClick={() => {
+            handleDecreaseItemQty(item.name);
+          }}
+          id="minus"
+        >
           <MinusSquareIcon className="pointer-events-none" />
         </a>
-        <a onClick={handleClick} id="delete">
+        <a
+          onClick={() => {
+            handleRemoveItem(item.name);
+          }}
+          id="delete"
+        >
           <SquareXIcon className="pointer-events-none" />
         </a>
       </div>

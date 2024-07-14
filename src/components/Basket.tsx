@@ -1,18 +1,15 @@
 "use client";
 import { BasketContext } from "@/contexts/basket";
-// import { basketCounter, basketTotaller } from "@/utils/utils";
 import { ShoppingBasket } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useCallback, useContext, useEffect, useState } from "react";
-import CheckoutButton from "./CheckoutButton";
-import ItemTile from "./ItemTile";
+import BasketContainer from "./BasketContainer";
 import { Button } from "./ui/button";
-import { BasketItem } from "@/types/basket";
 
 export default function Basket() {
   //useSession, signIn, signOut
   const [isBasketOpen, setIsBasketOpen] = useState(false);
-  const { basket, setBasket } = useContext(BasketContext);
+  const { basket } = useContext(BasketContext);
 
   const pathname = usePathname();
   const handleBasketClick = () => {
@@ -31,7 +28,7 @@ export default function Basket() {
 
   useEffect(() => {
     saveBasketBeforeExit();
-    console.log(basket)
+    console.log(basket);
   }, [basket, pathname, saveBasketBeforeExit]);
 
   return (
@@ -39,33 +36,9 @@ export default function Basket() {
       <Button onClick={handleBasketClick}>
         {basket.totalQty} <ShoppingBasket />
       </Button>
-      {basket.totalQty === 0 ? (
-        <section
-          id="basket-empty-msg"
-          className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll ${
-            isBasketOpen ? "visible" : "hidden"
-          }`}
-        >
-          no items!
-        </section>
-      ) : (
-        <section
-          id="basket-container"
-          className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 pb-0 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll  ${
-            isBasketOpen ? "visible" : "hidden"
-          }`}
-        >
-          {basket.items.map((item: BasketItem) => (
-            <ItemTile key={item.id} item={item} />
-          ))}
-          <div className="flex flex-col sticky bottom-0 bg-slate-600 rounded-xl w-full px-2 pb-2 text-white italic">
-            Subtotal:
-            <div className="flex justify-between">₽{basket.totalPrice}</div>
-            {/* put a ternary here for an alt Checkout if already logged in */}
-            <CheckoutButton />
-          </div>
-        </section>
-      )}
+      
+        <BasketContainer isBasketOpen={isBasketOpen} basket={basket} />
+      
     </section>
   );
 }
