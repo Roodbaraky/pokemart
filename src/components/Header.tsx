@@ -55,7 +55,7 @@ const navLinks = [
       // console.log(user)
 
   return (
-    <header className="flex  items-center justify-between p-2 px-4 fixed w-full max-w-[1200px] border-b bg-slate-50">
+    <header className="flex  items-center justify-between p-2 px-4 fixed w-full max-w-[1200px] border-b bg-slate-50 z-50">
       <Link href={"/"}>
         <Image
           src={

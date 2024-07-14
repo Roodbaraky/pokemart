@@ -32,7 +32,7 @@ export default function Basket() {
   }, [basket, pathname, saveBasketBeforeExit]);
 
   return (
-    <section className="top-18 fixed right-5 custom-right">
+    <section className="top-18 fixed right-5 custom-right z-50">
       <Button onClick={handleBasketClick}>
         {basket.totalQty} <ShoppingBasket />
       </Button>

@@ -21,7 +21,7 @@ export default function BasketContainer({
       ) : (
         <section
           id="basket-container"
-          className={`transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 pb-0 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll  ${
+          className={`z-100 transition-all delay-200 ease-in-out fixed top-36 right-5 custom-right p-2 pb-0 m-2 bg-slate-400 w-64 rounded-xl max-h-[80%] overflow-scroll  ${
             isBasketOpen ? "visible" : "hidden"
           }`}
         >
