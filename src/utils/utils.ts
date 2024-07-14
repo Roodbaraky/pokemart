@@ -1,70 +1,9 @@
-import { BasketItem } from "@/components/ItemTile";
-import { Dispatch } from "react";
-import offersData from '../resources/offersData.json';
 
+import { Basket, BasketItem } from "@/types/basket";
+import { Item } from "@/types/item";
 
-export const basketItemQTYChanger = (basket: BasketItem[], setBasket: Dispatch<BasketItem[]>, item: BasketItem, num: number) => {
-    let itemFound = false;
-    if (num === 0 || (num === -1 && item.qty === 1)) {
-        for (let i = 0; i < basket.length; i++) {
-            if (basket[i].id === item.id) {
-                const tempBasket: BasketItem[] = [
-                    ...basket.slice(0, i),
-                    ...basket.slice(i + 1),
-                ];
-
-                setBasket(tempBasket);
-                itemFound = true;
-                break;
-            }
-        }
-    } else {
-        for (let i = 0; i < basket.length; i++) {
-            if (basket[i].id === item.id) {
-                const tempBasket: BasketItem[] = [
-                    ...basket.slice(0, i),
-                    {
-                        ...item,
-                        qty: basket[i].qty + num,
-                        key: item.id,
-                        effect: item.effect,
-                    },
-                    ...basket.slice(i + 1),
-                ];
-
-                setBasket(tempBasket);
-                itemFound = true;
-                break;
-            }
-        }
-    }
-
-    if (!itemFound) {
-        setBasket([
-            ...basket,
-            {
-                ...item,
-                key: item.id,
-                qty: 1,
-                effect: item.effect,
-            },
-        ]);
-    }
-}
-export const basketCounter = async (basket: BasketItem[]) => {
-    return basket.reduce(async (acc, curr) => await acc + curr.qty, 0)
-}
 export const priceCalculator = async (item:
     BasketItem) => {
-
-    // const specialPrice = offersData.find((offer) => offer.name === item.name)?.specialPrice
-    // let subtotal = 0
-
-    // if (specialPrice && item.qty / specialPrice.quantity >= 1) {
-    //     const multiple = Math.floor(item.qty / specialPrice.quantity);
-    //     const remainder = item.qty % specialPrice.quantity;
-    //     subtotal += specialPrice.price * multiple;
-    //     subtotal += item.cost * remainder;
 
     const response = await fetch(`https://pokemart-be.onrender.com/offers/${item.name}`)
     const offer = await response.json()
@@ -78,35 +17,86 @@ export const priceCalculator = async (item:
         const remainder = item.qty % specialPrice.quantity;
         subtotal += specialPrice.price * multiple;
         subtotal += item.cost * remainder;
+        //Add logic here to recalculate total basket
+        //This can be previous total + (newItem.price - saving)
+        //Store basket total in context, saves another useState in Basket.tsx
     }
     else {
         subtotal += item.cost * item.qty
-
+        //If no offer is applied, just add item.cost to the previous basket total, simple.
     }
 
     return subtotal
 }
 
+export const addItemToBasket = (basket: Basket, item: Item) => {
+    const newBasket = structuredClone(basket)
+    //Check if item already in basket (AND get its index)
+    const itemLocationInBasket = basket.items.findIndex((basketItem) => basketItem.name === item.name)
 
-export const basketTotaller = async (basket: BasketItem[], currency: string) => {
-    if (currency === 'gbp') {
-        return basket.reduce(
-            (acc, curr) =>
-                acc +
-                (curr.name.includes("coffee")
-                    ? Number(curr.cost) * curr.qty
-                    : 0),
-            0
-        )
+    //If so, increment QTY, totalQTY, totalPrice
+    console.log(itemLocationInBasket)
+    if (itemLocationInBasket >= 0) {
+        newBasket.items[itemLocationInBasket].qty += 1
+        newBasket.totalPrice += item.cost
+        newBasket.totalQty += 1
+        //****Need to add eval as to whether new item has a specialPrice...***
+        //...and if so, need to calculate the saving:
+        // "total + (newItem.price - saving)"
+        return newBasket
     }
-    if (currency === 'poke') {
-        return basket.reduce(
-            async (acc, curr) =>
-                await acc +
-                (!curr.name.includes("coffee")
-                    ? await priceCalculator(curr)
-                    : 0),
-            0
-        )
+    //If not, give item additional tags (QTY:1), increment totalQTY, increment totalPrice by + item.cost
+    else {
+        newBasket.items.push({ ...item, qty: 1 })
+        newBasket.totalPrice += item.cost
+        newBasket.totalQty += 1
     }
+
+    return newBasket
+}
+
+export const removeItemFromBasket = (basket: Basket, itemName: string) => {
+    const newBasket = structuredClone(basket)
+    const itemLocationInBasket = basket.items.findIndex((basketItem) => basketItem.name === itemName)
+    if (itemLocationInBasket >= 0) {
+        const itemOfInterest = newBasket.items[itemLocationInBasket]
+        newBasket.totalQty -= itemOfInterest.qty
+        newBasket.totalPrice -= itemOfInterest.cost * itemOfInterest.qty
+        newBasket.items =
+            [...basket.items.slice(0, itemLocationInBasket),
+            ...basket.items.slice(itemLocationInBasket + 1),]
+        //Again, need more sophisticated logic here to check offers
+        //Essentially needs to work in reverse and subtract subtotal from the basket totalPrice
+    }
+
+    return newBasket
+}
+
+export const increaseItemQTY = (basket: Basket, itemName: string) => {
+    const newBasket = structuredClone(basket)
+    const itemLocationInBasket = basket.items.findIndex((basketItem) => basketItem.name === itemName)
+    if (itemLocationInBasket >= 0) {
+        newBasket.items[itemLocationInBasket].qty++
+        newBasket.totalQty++
+        newBasket.totalPrice += newBasket.items[itemLocationInBasket].cost
+        //same here
+    }
+    return newBasket
+}
+
+export const decreaseItemQTY = (basket: Basket, itemName: string) => {
+    const newBasket = structuredClone(basket)
+    const itemLocationInBasket = basket.items.findIndex((basketItem) => basketItem.name === itemName)
+    if (itemLocationInBasket >= 0) {
+        if (newBasket.items[itemLocationInBasket].qty > 0) {
+            newBasket.items[itemLocationInBasket].qty -= 1
+            newBasket.totalPrice -= newBasket.items[itemLocationInBasket].cost
+            newBasket.totalQty -= 1
+            //again, need sophisticated logic here
+        }
+        if (newBasket.items[itemLocationInBasket].qty === 0) {
+            return removeItemFromBasket(basket, itemName)
+        }
+    }
+    return newBasket
 }

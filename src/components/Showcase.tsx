@@ -2,14 +2,6 @@ import Image from "next/image";
 import React from "react";
 
 
-export interface Item {
-  id: number;
-  name: string;
-  effect: string;
-  sprite: string;
-  cost: number;
-}
-
 export default async function Showcase() {
   const randomId = 200 - Math.round(Math.random() * 100);
   const response = await fetch(`https://pokeapi.co/api/v2/item/${randomId}`);

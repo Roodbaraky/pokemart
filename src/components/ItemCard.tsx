@@ -1,26 +1,15 @@
 "use client";
-import { basketItemQTYChanger } from "@/utils/utils";
+import { BasketContext } from "@/contexts/basket";
+import { Basket } from "@/types/basket";
+import { ItemCardProps } from "@/types/item";
+import { addItemToBasket } from "@/utils/utils";
 import Image from "next/image";
 import React, { useContext } from "react";
-import { BasketContext } from "../context/context";
-import { BasketItem } from "./ItemTile";
-
-export interface Item {
-  id: number;
-  name: string;
-  effect: string;
-  sprite: string;
-  cost: number;
-}
-
-interface ItemCardProps {
-  item: Item;
-}
 
 export default function ItemCard({ item }: ItemCardProps) {
   const { basket, setBasket } = useContext(BasketContext) as {
-    basket: BasketItem[];
-    setBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
+    basket: Basket;
+    setBasket: React.Dispatch<React.SetStateAction<Basket>>;
   };
 
   const capitalisedName = item.name.includes("coffee")
@@ -32,16 +21,8 @@ export default function ItemCard({ item }: ItemCardProps) {
       : "";
 
   const handleClick = () => {
-    basketItemQTYChanger(
-      basket,
-      setBasket,
-      {
-        ...item,
-        qty: 0,
-        key: item.id,
-      },
-      1
-    );
+    const newBasket = addItemToBasket(basket, item);
+    setBasket(newBasket);
   };
 
   return (

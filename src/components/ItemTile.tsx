@@ -1,36 +1,30 @@
 "use client";
 import { MinusSquareIcon, PlusSquareIcon, SquareXIcon } from "lucide-react";
-
-
 import { MouseEvent, useContext } from "react";
-import {  BasketContext } from "@/context/context";
-import { basketItemQTYChanger } from "@/utils/utils";
-import { Item } from "./ItemCard";
-
-export interface BasketItem extends Item {
-  [x: string]: any;
-  qty: number;
-  key: number;
-  tag?: string;
-}
-
-
+import { BasketContext } from "@/contexts/basket";
+import {
+  decreaseItemQTY,
+  increaseItemQTY,
+  removeItemFromBasket,
+} from "@/utils/utils";
+import { BasketItem } from "@/types/basket";
 
 export default function ItemTile({ item }: { item: BasketItem }) {
   const description = item.effect || "";
   const { basket, setBasket } = useContext(BasketContext);
-  const handleClick = (e:MouseEvent) => {
+  const handleClick = (e: MouseEvent) => {
     const targetBtn = (e.target as HTMLButtonElement).id;
     if (targetBtn === "plus") {
-      basketItemQTYChanger(basket, setBasket, item, 1);
+      const newBasket = increaseItemQTY(basket, item.name);
+      setBasket(newBasket);
     }
     if (targetBtn === "minus") {
-      basketItemQTYChanger(basket, setBasket, item, -1);
-
+      const newBasket = decreaseItemQTY(basket, item.name);
+      setBasket(newBasket);
     }
     if (targetBtn === "delete") {
-      basketItemQTYChanger(basket, setBasket, item, 0);
-
+      const newBasket = removeItemFromBasket(basket, item.name);
+      setBasket(newBasket);
     } else {
       return;
     }
@@ -41,7 +35,7 @@ export default function ItemTile({ item }: { item: BasketItem }) {
       <p className="line-clamp-2 text-ellipsis italic">{description}</p>
       <div className="flex flex-row gap-2">
         <p className="">
-          {item.name.includes('coffee')? "£" : "₽" }
+          {item.name.includes("coffee") ? "£" : "₽"}
           {item.cost}
         </p>
         <p className="">QTY: {item.qty || 1} </p>

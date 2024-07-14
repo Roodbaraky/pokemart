@@ -1,6 +1,7 @@
-import { BasketWrapper } from "@/context/context";
+import { BasketWrapper } from "@/contexts/basket";
 import Basket from "./Basket";
-import ItemCard, { Item } from "./ItemCard";
+import ItemCard from "./ItemCard";
+import { Item } from "@/types/item";
 //https://pokeapi.co/api/v2/item/
 
 export default async function ItemsContainer(this: any) {
