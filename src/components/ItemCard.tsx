@@ -1,6 +1,5 @@
 "use client";
 import { BasketContext } from "@/contexts/basket";
-import { BasketItem } from "@/types/basket";
 import { Item, ItemCardProps } from "@/types/item";
 import Image from "next/image";
 import { useContext } from "react";
