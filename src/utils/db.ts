@@ -1,12 +1,12 @@
 
 import { Pool } from 'pg';
 
-const pool = new Pool({
+export const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false,
     },
-    max:2
+    max: 2
 });
 
 export async function query(text: string, params: any[] = []) {
@@ -19,6 +19,9 @@ export async function query(text: string, params: any[] = []) {
         return result;
     } finally {
         client.release();
-        
+
     }
+}
+export const breakConnection = () => {
+    pool.end()
 }
