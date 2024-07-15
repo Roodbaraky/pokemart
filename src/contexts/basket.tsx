@@ -81,12 +81,12 @@ export function BasketWrapper({ children }: { children: React.ReactNode }) {
       );
       if (itemLocationInBasket >= 0) {
         const itemOfInterest = newBasket.items[itemLocationInBasket];
-        newBasket.totalQty -= itemOfInterest.qty;
         const calculatedTotal = await fetchSpecialPrice(itemName);
         newBasket.totalPrice -= priceCalculator(
           itemOfInterest,
           calculatedTotal
         );
+        newBasket.totalQty -= itemOfInterest.qty;
         newBasket.items = [
           ...basket.items.slice(0, itemLocationInBasket),
           ...basket.items.slice(itemLocationInBasket + 1),
