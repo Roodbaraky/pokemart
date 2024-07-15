@@ -39,15 +39,6 @@ export function BasketWrapper({ children }: { children: React.ReactNode }) {
     localStorage.setItem("basket", JSON.stringify(basket));
   }, [basket]);
 
-  const updateTotalPrice = async (newBasket: Basket) => {
-    let totalPrice = 0;
-    for (const item of newBasket.items) {
-      const specialPrice = await fetchSpecialPrice(item.name);
-      totalPrice += priceCalculator(item, specialPrice);
-    }
-    newBasket.totalPrice = totalPrice;
-    setBasket(newBasket);
-  };
 
   const addItem = useCallback(
     async (item: BasketItem) => {

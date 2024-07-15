@@ -3,7 +3,6 @@ import { BasketContext } from "@/contexts/basket";
 import { Item, ItemCardProps } from "@/types/item";
 import Image from "next/image";
 import { useContext } from "react";
-import { Button } from "./ui/button";
 
 export default function ItemCard({ item }: ItemCardProps) {
   const { addItem } = useContext(BasketContext);
@@ -28,7 +27,6 @@ export default function ItemCard({ item }: ItemCardProps) {
     }}
   >
     <div className="group relative w-full h-full">
-      {/* Hover effect */}
       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl z-10">
         <p className="text-white">Add to basket</p>
       </div>
