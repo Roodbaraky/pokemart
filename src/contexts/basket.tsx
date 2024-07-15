@@ -39,7 +39,6 @@ export function BasketWrapper({ children }: { children: React.ReactNode }) {
     localStorage.setItem("basket", JSON.stringify(basket));
   }, [basket]);
 
-
   const addItem = useCallback(
     async (item: BasketItem) => {
       const newBasket = structuredClone(basket);

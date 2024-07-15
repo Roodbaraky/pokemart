@@ -1,14 +1,18 @@
 import { BasketWrapper } from "@/contexts/basket";
+import { Item } from "@/types/item";
+import { GETitems } from "@/app/api/items/route"; 
 import Basket from "./Basket";
 import ItemCard from "./ItemCard";
-import { Item } from "@/types/item";
 //https://pokeapi.co/api/v2/item/
 
 export default async function ItemsContainer(this: any) {
-  const itemsResponse = await fetch("https://pokemart-be.onrender.com/items");
+  // const itemsResponse = await fetch("https://pokemart-be.onrender.com/items");
+ try{
+  const itemsResponse = await GETitems()
+
  
 
-  const items = await itemsResponse.json();
+  const items = await itemsResponse.json()
   const coffeeItem: Item = {
     id: 8008135,
     name: "coffee",
@@ -35,4 +39,8 @@ export default async function ItemsContainer(this: any) {
       </section>
     </BasketWrapper>
   );
+
+}catch(err){
+  console.log(err)
+ }
 }

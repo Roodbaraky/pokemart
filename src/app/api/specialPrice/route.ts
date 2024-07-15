@@ -6,8 +6,9 @@ import { NextRequest } from 'next/server';
 
 
 export const GET = async (req: NextRequest) => {
-  const itemName = req.nextUrl.pathname.slice(18)
-  //this is super hacky and not correct ^^^
+  // console.log(req)
+  const itemName = req.nextUrl.searchParams.get('itemName')
+  //this is better? :/
   try {
     const result = await query('SELECT * FROM offers WHERE name = $1;', [itemName]);
 
