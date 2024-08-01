@@ -1,6 +1,6 @@
 import { BasketWrapper } from "@/contexts/basket";
 import { Item } from "@/types/item";
-import { GETitems } from "@/app/api/items/route"; 
+import { GETitems } from "@/utils/utils"; 
 import Basket from "./Basket";
 import ItemCard from "./ItemCard";
 //https://pokeapi.co/api/v2/item/

@@ -1,3 +1,4 @@
+import { supabase } from "@/utils/db";
 
 import { BasketItem } from "@/types/basket";
 export const fetchSpecialPrice = async (itemName: string) => {
@@ -30,6 +31,19 @@ export const priceCalculator = (item: BasketItem, specialPrice: any) => {
 
 
 
+export const GETitems = async () => {
+    try{
+        const result = await supabase
+        .from('items')
+        .select('*')
+        const items = result.data
+        return new Response (JSON.stringify(items))
+    }
+    catch (error) {
+        console.error('Error fetching items:', error);
+        return new Response('', { status: 500, statusText: 'Database error' });
+      }
+}
 
 
 

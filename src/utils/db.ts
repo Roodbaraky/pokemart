@@ -1,28 +1,11 @@
 
-import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js'
 
 
-export const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-    max: 2
-});
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY 
 
-export async function query(text: string, params: any[] = []) {
-    const start = Date.now();
-    const client = await pool.connect();
-    try {
-        const result = await client.query(text, params);
-        const duration = Date.now() - start;
-        // console.log('Executed query', { text, duration, rows: result.rowCount });
-        return result;
-    } finally {
-        client.release();
+export const supabase = createClient(SUPABASE_URL!, SUPABASE_KEY!);
 
-    }
-}
-export const breakConnection = () => {
-    pool.end()
-}
+
+
